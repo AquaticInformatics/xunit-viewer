@@ -88,32 +88,24 @@ function parseProperties(suites) {
     })
 }
 
-function updateTest(test, testReults, type) {
-    if (!Array.isArray(testReults))
-        testReults = [testReults]
+function updateTest(test, testResults, type) {
+    if (!Array.isArray(testResults))
+        testResults = [testResults]
 
     test.type = type
 
-    testReults.map(function(testReult) {
-        if (typeof testReult === 'string')
+    testResults.map(function(testResult) {
+        if (typeof testResult === 'string')
             test.messages.values.push({
-                value: testReult
+                value: testResult
             })
-        else if (testReult.hasOwnProperty('_'))
+        if (testResult.hasOwnProperty('$') && testResult.$.hasOwnProperty('message'))
             test.messages.values.push({
-                value: testReult._
+                value: testResult.$.message
             })
-        else if (testReult.hasOwnProperty('$') && testReult.$.hasOwnProperty('message') && testReult.$.hasOwnProperty('type'))
+        if (testResult.hasOwnProperty('_'))
             test.messages.values.push({
-                value: testReult.$.type + ' ' + testReult.$.message
-            })
-        else if (testReult.hasOwnProperty('$') && testReult.$.hasOwnProperty('message'))
-            test.messages.values.push({
-                value: testReult.$.message
-            })
-        else if (testReult.hasOwnProperty('$') && testReult.$.hasOwnProperty('type'))
-            test.messages.values.push({
-                value: testReult.$.type
+                value: testResult._
             })
     })
 }
